@@ -1,0 +1,24 @@
+{% set Posts =  wp_posts() %}
+
+<div class="ec-secHeading">
+    <span class="ec-secHeading__en">COLUMN</span>
+    <span class="ec-secHeading__line"></span>
+    <span class="ec-secHeading__ja">最新記事</span>
+</div>
+
+{% if Posts is not null %}
+    <div>
+    {% for Post in Posts %}
+        <div>
+            <div class="h3">{{ Post.title.rendered }}</div>
+            <div>
+              <small>{{ Post.date|date("Y/m/d") }}</small>
+            </div>
+            <div>{{ Post.excerpt.rendered }}</div>
+            <div class="text-right">
+                <a class="btn btn-default" href="{{ Post.link }}" role="button">記事を見る</a>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+{% endif %}
