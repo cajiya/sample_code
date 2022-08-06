@@ -1,0 +1,13 @@
+{% set Categories =  wp_categories() %}
+
+<div class="ec-secHeading">
+    <span class="ec-secHeading__ja">コラムカテゴリー</span>
+</div>
+
+{% if Categories is not null %}
+    <div class="list-group">
+    {% for Category in Categories %}
+        <a href="{{ Category.link }}" class="list-group-item">{{ Category.name }}</a>
+    {% endfor %}
+    </div>
+{% endif %}
