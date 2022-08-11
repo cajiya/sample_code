@@ -72,7 +72,7 @@ function refresh_eccube_access_token(){
         "client_id" => get_eccube_api_config( 'client_id' ),
         "client_secret" => get_eccube_api_config( 'client_secret' ),
         "grant_type" => "refresh_token",
-        "refresh_token" => get_eccube_api_config( 'refreshtoken' )
+        "refresh_token" => get_option( 'eccube_refreshtoken' )
     ) );
     $header = array(
         "Content-Type: application/x-www-form-urlencoded",
