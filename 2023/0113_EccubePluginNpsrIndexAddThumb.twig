@@ -1,0 +1,67 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends 'default_frame.twig' %}
+
+{% block main %}
+
+<div class="ec-searchnavRole">
+
+  <div class="ec-searchnavRole__topicpath">
+    <ol class="ec-topicpath">
+      <li class="ec-topicpath__item"><a href="{{ url('news_index') }}">{{ 'ニュース一覧'|trans }}</a>
+    </ol>
+  </div>
+
+  <div class="ec-searchnavRole__infos">
+    <div class="ec-searchnavRole__counter">
+      {% if pagination.totalItemCount > 0 %}
+        {{ '<span class="ec-font-bold">%count%件</span><span>のニュースが見つかりました</span>'|trans({ '%count%': pagination.totalItemCount })|raw }}
+      {% else %}
+        <span>{{ 'まだニュースがありません'|trans }}</span>
+      {% endif %}
+    </div>
+  </div>
+
+</div>
+
+<div class="ec-role">
+
+  {% if pagination.totalItemCount > 0 %}
+    {% for News in pagination %}
+    <div style="border-bottom: 1px solid #ddd;padding: 30px 0;">
+      {% if News.np_thumbnail_url == true %}
+        <img src="{{ asset( News.np_thumbnail_url , 'save_image') }}" alt="{{ News.title }}">
+      {% endif %}
+      <div class="npsr-content">
+        {{ News.description|raw }}
+      </div>
+
+      <small style="float:right;">{{ News.publish_date|date("Y/m/d") }}</small><br>
+        {% if News.url %}
+          <a href="{{ News.url }}" {% if News.link_method == '1' %}target="_blank"{% endif %}>
+        {% else %}
+          <a href="{{ url('news_detail', {'id': News.id}) }}">
+        {% endif %}
+            <h2 style="margin:0;">{{ News.title }}</h2>
+          </a>
+    </div>
+    {% endfor %}
+  {% else %}
+    <div>{{ 'まだニュースはありません。'|trans }}</div>
+  {% endif %}
+  
+  <div class="ec-pagerRole">
+      {% include "pager.twig" with {'pages': pagination.paginationData} %}
+  </div>
+
+</div>
+
+{% endblock %}
