@@ -1,5 +1,5 @@
 <?php
-// /app/Customize/EventListener/TwigAddParamsEventListener.php
+// /app/Customize/EventListener/TwigAddParamsListener.php
 
 namespace Customize\EventListener;
 
@@ -8,7 +8,7 @@ use Eccube\Event\TemplateEvent;
 use Eccube\Repository\ProductRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class TwigAddParamsEventListener implements EventSubscriberInterface
+class TwigAddParamsListener implements EventSubscriberInterface
 {
     /**
      * コンストラクタ
