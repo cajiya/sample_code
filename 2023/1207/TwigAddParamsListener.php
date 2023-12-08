@@ -36,17 +36,30 @@ class TwigAddParamsListener implements EventSubscriberInterface
         $parameters = $event->getParameters();
 
         // 売上ランキングのデータを取得
-        $rankings = $this->rankingRepository->getProductsRanking();
+        $ProductClasses = $this->rankingRepository->getProductsRanking();
+        $event->setParameters($parameters);
 
-        $result = null;
-        if (!empty($rankings)) {
-            // ランキングデータから商品IDを抽出
-            $product_ids = array_column($rankings, 'product_id');
-            // 商品IDに基づいて商品情報を取得
-            $Products = $this->productRepository->findBy(['id' => $product_ids]);
+        $sums = [];
+        $Products = [];
+        if (!empty($ProductClasses)) {
+
+            foreach ($ProductClasses as $item) {
+                if (!isset($sums[$item['product_id']])) {
+                    $sums[$item['product_id']] = 0;
+                }
+                $sums[$item['product_id']] += $item['total_price'];
+            }
+            // 合計をtotal_priceで並び替え
+            arsort($sums);
+
+            // 結果を表示（必要に応じて）
+            foreach ($sums as $productId => $totalPrice) {
+                // 商品IDに基づいて商品情報を取得
+                $Products[] = current($this->productRepository->findBy(['id' => $productId]));
+            }
         }
 
-        // テンプレートにランキング商品を渡す
+        // // テンプレートにランキング商品を渡す
         $parameters['rankingProducts'] = $Products;
         $event->setParameters($parameters);
     }
